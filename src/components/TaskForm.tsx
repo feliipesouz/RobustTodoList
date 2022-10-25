@@ -32,7 +32,7 @@ const TaskForm = ({ btnText, taskList, setTaskList }: Props) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     //ChangeEvent para podermos alterar os eventos que ocorrem na tela.
-    if ((e.target.name = "title")) {
+    if ((e.target.name === "title")) {
       setTitle(e.target.value);
     } else {
       setDifficulty(parseInt(e.target.value)); //Transformando o input em number

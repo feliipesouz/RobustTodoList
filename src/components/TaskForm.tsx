@@ -6,14 +6,29 @@ import { ITask } from "../interfaces/Task";
 
 interface Props {
   btnText: string;
+  taskList: ITask[];
+  setTaskList?: React.Dispatch<React.SetStateAction<ITask[]>>; //Pode vir ou não(só enviarei quando eu precisar), pois terei fomulário de adição também!
 }
 
-const TaskForm = ({ btnText }: Props) => {
+const TaskForm = ({ btnText, taskList, setTaskList }: Props) => {
   const [id, setId] = React.useState<number>(0);
   const [title, setTitle] = React.useState<string>("");
   const [difficulty, setDifficulty] = React.useState<number>(0);
 
-  const addTaskHandler = () => {};
+  const addTaskHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); //Conseguirei enviar o formulário sem que ele submeta, recarregue a página!
+
+    const id = Math.floor(Math.random() * 1000);
+
+    const newTask: ITask = { id, title, difficulty };
+
+    setTaskList!([...taskList, newTask]); //Por padrão, gera um erro pois é opcional, confirmo que ele virá com um !.
+
+    setTitle("");
+    setDifficulty(0);
+
+    console.log(taskList);
+  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     //ChangeEvent para podermos alterar os eventos que ocorrem na tela.
@@ -22,8 +37,6 @@ const TaskForm = ({ btnText }: Props) => {
     } else {
       setDifficulty(parseInt(e.target.value)); //Transformando o input em number
     }
-    console.log(title);
-    console.log(difficulty);
   };
 
   return (
@@ -35,6 +48,7 @@ const TaskForm = ({ btnText }: Props) => {
           name="title"
           placeholder="Título da tarefa"
           onChange={handleChange}
+          value={title}
         />
       </div>
       <div className={styles.input_container}>
@@ -44,6 +58,7 @@ const TaskForm = ({ btnText }: Props) => {
           name="difficulty"
           placeholder="Dificuldade da tarefa"
           onChange={handleChange}
+          value={difficulty}
         />
       </div>
       <input type="submit" value={btnText} />

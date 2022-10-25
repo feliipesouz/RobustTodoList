@@ -1,14 +1,21 @@
-import React from 'react'
+import React from "react";
 
-interface Props {}
+import { ITask } from "../interfaces/Task";
 
-const TaskList = (props: Props) => {
-
-  return (
-    <div>
-        TaskList
-    </div>
-  )
+interface Props {
+  taskList: ITask[];
 }
 
-export default TaskList
+const TaskList = ({ taskList }: Props) => {
+  return (
+    <>
+      {TaskList.length > 0 ? (
+        taskList.map((task) => <p key={task.id}>{task.title}</p>)
+      ) : (
+        <p>Não há tarefas cadastradas!</p>
+      )}
+    </>
+  );
+};
+
+export default TaskList;

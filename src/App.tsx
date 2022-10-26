@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
+import Modal from "./components/Modal";
 
 import styles from "./App.module.css";
 
@@ -11,8 +12,18 @@ import { ITask } from "./interfaces/Task";
 
 function App() {
   const [taskList, setTaskList] = React.useState<ITask[]>([]);
+
+  const deleteTask = (id: number) => {
+    setTaskList(
+      taskList.filter((task) => {
+        return task.id !== id;
+      })
+    );
+  };
+
   return (
     <div>
+      <Modal />
       <Header />
       <main className={styles.main}>
         <div>
@@ -25,7 +36,7 @@ function App() {
         </div>
         <div>
           <h2>Suas tarefas: </h2>
-          <TaskList taskList={taskList} />
+          <TaskList taskList={taskList} handleDelete={deleteTask} />
         </div>
       </main>
       <Footer />

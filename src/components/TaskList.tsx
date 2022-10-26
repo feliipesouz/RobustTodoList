@@ -5,21 +5,22 @@ import { ITask } from "../interfaces/Task";
 import styles from "./TaskList.module.css";
 interface Props {
   taskList: ITask[];
+  handleDelete(id: number): void
 }
 
-const TaskList = ({ taskList }: Props) => {
+const TaskList = ({ taskList, handleDelete }: Props) => {
   return (
     <>
       {TaskList.length > 0 ? (
         taskList.map((task) => (
-          <div key={task.id}>
+          <div key={task.id} className={styles.task}>
             <div className={styles.details}>
               <h4>{task.title}</h4>
               <p>Dificuldade: {task.difficulty}</p>
             </div>
             <div className={styles.actions}>
               <i className="bi bi-pencil"></i>
-              <i className="bi bi-trash"></i>
+              <i className="bi bi-trash" onChange={() => handleDelete(task.id)}></i>
             </div>
           </div>
         ))

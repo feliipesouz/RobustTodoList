@@ -5,10 +5,11 @@ import { ITask } from "../interfaces/Task";
 import styles from "./TaskList.module.css";
 interface Props {
   taskList: ITask[];
-  handleDelete(id: number): void
+  handleDelete(id: number): void;
+  handleEdit(): void;
 }
 
-const TaskList = ({ taskList, handleDelete }: Props) => {
+const TaskList = ({ taskList, handleDelete, handleEdit }: Props) => {
   return (
     <>
       {TaskList.length > 0 ? (
@@ -19,8 +20,11 @@ const TaskList = ({ taskList, handleDelete }: Props) => {
               <p>Dificuldade: {task.difficulty}</p>
             </div>
             <div className={styles.actions}>
-              <i className="bi bi-pencil"></i>
-              <i className="bi bi-trash" onChange={() => handleDelete(task.id)}></i>
+              <i className="bi bi-pencil" onClick={() => handleEdit()}></i>
+              <i
+                className="bi bi-trash"
+                onChange={() => handleDelete(task.id)}
+              ></i>
             </div>
           </div>
         ))

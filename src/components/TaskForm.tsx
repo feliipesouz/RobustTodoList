@@ -9,9 +9,10 @@ interface Props {
   taskList: ITask[];
   setTaskList?: React.Dispatch<React.SetStateAction<ITask[]>>; //Pode vir ou não(só enviarei quando eu precisar), pois terei fomulário de adição também!
   task?: ITask | null;
+  handleUpdate?(id: number, title: string, difficulty: number): void;
 }
 
-const TaskForm = ({ btnText, taskList, setTaskList, task }: Props) => {
+const TaskForm = ({ btnText, taskList, setTaskList, task, handleUpdate }: Props) => {
   const [id, setId] = React.useState<number>(0);
   const [title, setTitle] = React.useState<string>("");
   const [difficulty, setDifficulty] = React.useState<number>(0);
@@ -27,16 +28,18 @@ const TaskForm = ({ btnText, taskList, setTaskList, task }: Props) => {
   const addTaskHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); //Conseguirei enviar o formulário sem que ele submeta, recarregue a página!
 
-    const id = Math.floor(Math.random() * 1000);
+    if (handleUpdate) {
+      handleUpdate(id, title, difficulty);
+    } else {
+      const id = Math.floor(Math.random() * 1000);
 
-    const newTask: ITask = { id, title, difficulty };
+      const newTask: ITask = { id, title, difficulty };
 
-    setTaskList!([...taskList, newTask]); //Por padrão, gera um erro pois é opcional, confirmo que ele virá com um !.
+      setTaskList!([...taskList, newTask]); //Por padrão, gera um erro pois é opcional, confirmo que ele virá com um !.
 
-    setTitle("");
-    setDifficulty(0);
-
-    console.log(taskList);
+      setTitle("");
+      setDifficulty(0);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

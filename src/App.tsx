@@ -1,24 +1,24 @@
 import React from "react";
+import styles from "./App.module.css";
 
+// components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import Modal from "./components/Modal";
 
-import styles from "./App.module.css";
-
+// interfaces
 import { ITask } from "./interfaces/Task";
-import { SettingsOutline } from "styled-icons/evaicons-outline";
 
 function App() {
   const [taskList, setTaskList] = React.useState<ITask[]>([]);
   const [taskToUpdate, setTaskToUpdate] = React.useState<ITask | null>(null); //Isso fará o gerenciamento da tarefa que eu quero atualizar
 
-  const deleteTask = (id: number) => {
+  const deleteTask = (title: string): void => {
     setTaskList(
       taskList.filter((task) => {
-        return task.id !== id;
+        return task.title !== title;
       })
     );
   };
@@ -34,13 +34,32 @@ function App() {
 
   const editTask = (task: ITask): void => {
     hideOrShowModal(true);
-    setTaskToUpdate(task)
+    setTaskToUpdate(task);
+  };
+
+  const updateTask = (id: number, title: string, difficulty: number) => {
+    const updatedTask: ITask = { id, title, difficulty };
+
+    const updatedItems = taskList.map((task) => {
+      return task.id === updatedTask.id ? updatedTask : task;
+    });
+
+    setTaskList(updatedItems);
+
+    hideOrShowModal(false);
   };
 
   return (
     <div>
       <Modal
-        children={<TaskForm btnText="Editar Tarefa" taskList={taskList} task={taskToUpdate}/>}
+        children={
+          <TaskForm
+            btnText="Editar"
+            taskList={taskList}
+            task={taskToUpdate}
+            handleUpdate={updateTask}
+          />
+        }
       />
       <Header />
       <main className={styles.main}>

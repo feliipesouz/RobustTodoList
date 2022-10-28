@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 //import pencil from '@styled-icons/evil/Pencil';
+
+// interfaces
 import { ITask } from "../interfaces/Task";
 
 import styles from "./TaskList.module.css";
 
 interface Props {
   taskList: ITask[];
-  handleDelete(id: number): void;
+  handleDelete(title: string): void;
   handleEdit(task: ITask): void;
 }
 
@@ -14,8 +16,8 @@ const TaskList = ({ taskList, handleDelete, handleEdit }: Props) => {
   return (
     <>
       {TaskList.length > 0 ? (
-        taskList.map((task) => (
-          <div key={task.id} className={styles.task}>
+        taskList.map((task, index) => (
+          <div key={index} className={styles.task}>
             <div className={styles.details}>
               <h4>{task.title}</h4>
               <p>Dificuldade: {task.difficulty}</p>
@@ -24,7 +26,7 @@ const TaskList = ({ taskList, handleDelete, handleEdit }: Props) => {
               <i className="bi bi-pencil" onClick={() => handleEdit(task)}></i>
               <i
                 className="bi bi-trash"
-                onChange={() => handleDelete(task.id)}
+                onClick={() => handleDelete(task.title)}
               ></i>
             </div>
           </div>

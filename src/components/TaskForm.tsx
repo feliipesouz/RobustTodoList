@@ -8,12 +8,21 @@ interface Props {
   btnText: string;
   taskList: ITask[];
   setTaskList?: React.Dispatch<React.SetStateAction<ITask[]>>; //Pode vir ou não(só enviarei quando eu precisar), pois terei fomulário de adição também!
+  task?: ITask | null;
 }
 
-const TaskForm = ({ btnText, taskList, setTaskList }: Props) => {
+const TaskForm = ({ btnText, taskList, setTaskList, task }: Props) => {
   const [id, setId] = React.useState<number>(0);
   const [title, setTitle] = React.useState<string>("");
   const [difficulty, setDifficulty] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    if (task) {
+      setId(task.id);
+      setTitle(task.title);
+      setDifficulty(task.difficulty);
+    }
+  }, [task]);
 
   const addTaskHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); //Conseguirei enviar o formulário sem que ele submeta, recarregue a página!
@@ -32,7 +41,7 @@ const TaskForm = ({ btnText, taskList, setTaskList }: Props) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     //ChangeEvent para podermos alterar os eventos que ocorrem na tela.
-    if ((e.target.name === "title")) {
+    if (e.target.name === "title") {
       setTitle(e.target.value);
     } else {
       setDifficulty(parseInt(e.target.value)); //Transformando o input em number

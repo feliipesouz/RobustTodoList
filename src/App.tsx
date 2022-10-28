@@ -9,9 +9,11 @@ import Modal from "./components/Modal";
 import styles from "./App.module.css";
 
 import { ITask } from "./interfaces/Task";
+import { SettingsOutline } from "styled-icons/evaicons-outline";
 
 function App() {
   const [taskList, setTaskList] = React.useState<ITask[]>([]);
+  const [taskToUpdate, setTaskToUpdate] = React.useState<ITask | null>(null); //Isso fará o gerenciamento da tarefa que eu quero atualizar
 
   const deleteTask = (id: number) => {
     setTaskList(
@@ -30,14 +32,15 @@ function App() {
     }
   };
 
-  const editTask = (): void => {
+  const editTask = (task: ITask): void => {
     hideOrShowModal(true);
+    setTaskToUpdate(task)
   };
 
   return (
     <div>
       <Modal
-        children={<TaskForm btnText="Editar Tarefa" taskList={taskList} />}
+        children={<TaskForm btnText="Editar Tarefa" taskList={taskList} task={taskToUpdate}/>}
       />
       <Header />
       <main className={styles.main}>
@@ -51,7 +54,11 @@ function App() {
         </div>
         <div>
           <h2>Suas tarefas: </h2>
-          <TaskList taskList={taskList} handleDelete={deleteTask} handleEdit={editTask}/>
+          <TaskList
+            taskList={taskList}
+            handleDelete={deleteTask}
+            handleEdit={editTask}
+          />
         </div>
       </main>
       <Footer />
